@@ -1,0 +1,1 @@
+SELECT count(*) from player where league_id = 2;
