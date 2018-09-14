@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html ng-app="utr">
+<head>
+  <title>Welcome to UTR League - Players ranking for the season</title>
+  <meta name="description" content="Players ranking in the league">
+
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular-cookies.js"></script>
+
+  <script src="javascript/app.js?v1"></script>
+  <script src="javascript/ranking.js?v1"></script>
+</head>
+
+<body>
+
+<script type="text/javascript" src="javascript/logo_static.js?v1"></script>
+
+<div class="container" ng-controller="sessionController">
+  <table width="830px" align="center">
+    <tr>
+      <td align="right">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="rule.html">Rules</a></li>
+            <li><a href="season.html">Season</a></li>
+            <li class="active"><a href="ranking.html">Ranking</a></li>
+            <li><a href="message.html">Messages</a></li>
+          </ul>
+        </nav>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="clearfix" ng-show="loggedIn">
+          <p class="bluebig" style="text-align: right">Logged in as {{ firstName }} &nbsp; &nbsp;
+            <button class="btn btn-success" ng-click="logout()">
+              <span class="glyphicon glyphicon-remove"></span> Logout
+            </button>
+          </p>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <div class="clearfix" ng-hide="loggedIn">
+    <p><h3>This is member only area, please <a href="index.html">login</a> first to access the content.</h3></p>
+  </div>
+  <div class="clearfix" ng-show="loggedIn">
+    <div class="container" ng-controller="rankController">
+      <p class="blackbigger"> North County UTR League - Fall 2018 </p>
+      <table width="800px" align="center">
+        <tr>
+          <td>
+            <p></p>
+            <h3>Current Ranking</h3>
+            <span class="pull-right">
+                <select ng-model="divisionId"
+                        ng-options="division.id as (division.name) for division in divisions"
+                        ng-change="reload()">
+                </select>
+              </span>
+            <hr/>
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th>Player</th>
+                <th>Matches Won</th>
+                <th>Matches Lost</th>
+                <th>Match Won%</th>
+                <th>Games Won</th>
+                <th>Games Lost</th>
+                <th>Game Won%</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="p in playerResults">
+                <td style="max-width: 150px"><p class="bluesmall">
+                  <a class="name" href="#" ng-click="popup(p.key.playerId, p.firstName, p.lastName)"> {{ p.firstName }} {{ p.lastName }} </a>
+                </p>
+                </td>
+                <td><p class="bluesmall">{{ p.matchWon }}</p></td>
+                <td><p class="bluesmall">{{ p.matchLost }}</p></td>
+                <td><p class="bluesmall">{{ p.matchWonPercent }}%</p></td>
+                <td><p class="bluesmall">{{ p.gameWon }}</p></td>
+                <td><p class="bluesmall">{{ p.gameLost }}</p></td>
+                <td><p class="bluesmall">{{ p.gameWonPercent }}%</p></td>
+              </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

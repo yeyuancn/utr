@@ -104,7 +104,7 @@ td {
 }
 
 .black {
-    font-weight: bold; font-size: 14px; color: black;
+    font-weight: bold; font-size: 12px; color: black;
 }
 
 .green {
@@ -119,8 +119,17 @@ td {
 	font-weight: bold; font-size: 12px; color: pink;
 }
 
+.bluebig {
+	font-weight: bold; font-size: 14px; color: royalblue;
+}
 
+.blackbig {
+	font-weight: bold; font-size: 14px; color: black;
+}
 
+.blackbigger {
+	font-weight: bold; font-size: 16px; color: black;
+}
 
 .redsmall {
 	font-size: 11px; color: red;
