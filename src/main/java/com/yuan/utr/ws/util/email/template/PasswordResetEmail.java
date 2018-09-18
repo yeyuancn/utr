@@ -5,21 +5,19 @@ package com.yuan.utr.ws.util.email.template;
  */
 public class PasswordResetEmail extends SiteEmail
 {
-    public PasswordResetEmail(String emailAddr, long accountId, int passwordKey, String name)
+    public PasswordResetEmail(String emailAddr, long accountId, int passwordKey)
     {
         this.setToAddr(emailAddr);
         this.setSubject("Your password reset request");
-        String link = "http://www.justtennisleague.com/resetPassword.html?" + "accountId=" + accountId + "&key=" + passwordKey;
-        String actualContent = emailTemplate.replace("[name]", name).replace("[link]", link);
+        String link = "http://www.utrleague.com/resetPassword.html?" + "accountId=" + accountId + "&key=" + passwordKey;
+        String actualContent = emailTemplate.replace("[link]", link);
         this.setHtmlContent(actualContent);
-
     }
 
-    private static String emailTemplate = "Hi [name], <br><br>" +
+    private static String emailTemplate = "Hi, <br><br>" +
             "We've received your request to reset your account password. <br><br>" +
             "Please click on the following link to reset the password. <br><br>" +
             "<a href=\"[link]\" target=\"_blank\">Reset Account Password</a><br><br>" +
-            "Regards, <br>" +
-            "<a href=\"http://www.justtennisleague.com\" target=\"_blank\">justtennisleague.com</a>";
+            "Regards, <br>" + "<a href=\"http://www.utrleague.com\" target=\"_blank\">utrleague.com</a>";
 
 }

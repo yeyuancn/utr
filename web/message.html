@@ -28,8 +28,8 @@
           <ul class="nav nav-pills pull-right">
             <li><a href="index.html">Home</a></li>
             <li><a href="rule.html">Rules</a></li>
-            <li><a href="season.html">Season</a></li>
             <li><a href="ranking.html">Ranking</a></li>
+            <li><a href="match.html">Matches</a></li>
             <li class="active"><a href="message.html">Messages</a></li>
           </ul>
         </nav>
@@ -166,7 +166,7 @@
               <table class="table table-striped">
                 <thead>
                 <tr>
-                  <th style="min-width: 60px"><input type="checkbox" ng-change="selectAll()" ng-model="master">&nbsp;All</th>
+                  <th style="min-width: 60px"><input type="checkbox" ng-change="selectAll()" ng-model="selectEveryone">&nbsp;All</th>
                   <th>Player</th>
                   <th>Matches Won</th>
                   <th>Matches Lost</th>
@@ -178,7 +178,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="p in playerResults">
-                  <td><input type="checkbox" ng-model="selected[p.playerId]" ng-disabled="isSameAsUser(p.playerId)"></td>
+                  <td><input type="checkbox" ng-model="selected[p.playerId]"></td>
                   <td style="max-width: 150px">
                     <p class="bluesmall">
                       <a class="name" href="#" ng-click="popup(p.playerId, p.firstName, p.lastName)"> {{ p.firstName }} {{ p.lastName }} </a>
@@ -202,7 +202,7 @@
 
                   <td style="min-width:150px; max-width: 150px; text-align:center" valign="top">
                     <br/><br/>
-                    <button class="btn btn-success" ng-click="sendEmail()">
+                    <button class="btn btn-success" ng-click="sendMessage()">
                       <span class="glyphicon glyphicon-save"></span> Send
                     </button>
                     <div class="red" ng-show="sendError">{{ errorMessage }}</div>

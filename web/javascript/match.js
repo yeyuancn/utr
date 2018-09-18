@@ -1,4 +1,4 @@
-app.controller("seasonController", function ($scope, $http, $cookies) {
+app.controller("matchController", function ($scope, $http, $cookies) {
     var playerUrl = rest_url + "PlayerService/";
     var matchUrl = rest_url + "MatchResultService/";
     var leagueUrl = rest_url + "LeagueService/";
@@ -66,7 +66,7 @@ app.controller("seasonController", function ($scope, $http, $cookies) {
                     $scope.players = data;
                 });
 
-                $http.post(leagueUrl + 'allDivisions/', player).success(function (data) {
+                $http.get(leagueUrl + 'getCurrentDivisions/').success(function (data) {
                     $scope.divisions = data;
                 });
 

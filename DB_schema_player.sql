@@ -118,3 +118,6 @@ insert into player (first_name, last_name, email, phone, utr_score) values ('Paa
 insert into player (first_name, last_name, email, phone, utr_score) values ('Gautam','Gupta','deeshigonu@gmail.com','16197217208', 1.04);
 insert into player (first_name, last_name, email, phone, utr_score) values ('Krish','Mandadi','krish.r.mandadi@gmail.com','18582452296', 1.0);
 insert into player (first_name, last_name, email, phone, utr_score) values ('Sanjai','Subramanian','sanjai.awesome112358@gmail.com','18589517309', 1.0);
+
+
+update player set email = 'yeyuancn2@yahoo.com';

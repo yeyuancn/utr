@@ -24,15 +24,15 @@ public class MailUtil
     private static final String emailAcct = "justtennisleague@gmail.com";
     private static final String emailPassword = "just_tennis";
 
-    public static void sendPlayerEmail(String toAddr, String playerFirstName, String content)
-    {
-        String subject = playerFirstName + ", New Message from UTR League ";
-        new Mailer(toAddr, subject, content).start();
-    }
-
     public static void sendCommentEmail(String fromAddr, String content)
     {
         String subject = "A comment is left from " + fromAddr;
+        new Mailer(adminAddr, subject, content).start();
+    }
+
+    public static void sendSystemEmail(String content)
+    {
+        String subject = "UTR League System Email";
         new Mailer(adminAddr, subject, content).start();
     }
 

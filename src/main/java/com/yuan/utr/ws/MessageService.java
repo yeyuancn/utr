@@ -1,15 +1,16 @@
 package com.yuan.utr.ws;
 
-import com.yuan.tennis.dao.AccountDAO;
-import com.yuan.tennis.dao.MessageDAO;
-import com.yuan.tennis.dao.PlayerDAO;
-import com.yuan.tennis.model.MessageWrapper;
-import com.yuan.tennis.model.persistent.Account;
-import com.yuan.tennis.model.persistent.Message;
-import com.yuan.tennis.model.persistent.MessageView;
-import com.yuan.tennis.model.persistent.Player;
-import com.yuan.tennis.ws.exception.AppException;
-import com.yuan.tennis.ws.util.email.MailUtil;
+import com.yuan.utr.dao.AccountDAO;
+import com.yuan.utr.dao.MessageDAO;
+import com.yuan.utr.dao.PlayerDAO;
+import com.yuan.utr.model.MessageWrapper;
+import com.yuan.utr.model.persistent.Account;
+import com.yuan.utr.model.persistent.Message;
+import com.yuan.utr.model.persistent.MessageView;
+import com.yuan.utr.model.persistent.Player;
+import com.yuan.utr.ws.exception.AppException;
+import com.yuan.utr.ws.util.email.MailUtil;
+import com.yuan.utr.ws.util.email.template.PlayerMessageEmail;
 import org.apache.log4j.Logger;
 
 import javax.ws.rs.Consumes;
@@ -81,11 +82,16 @@ public class MessageService
 					message.setMessageTime(new Date());
 					messageDao.addMessage(message);
 					Player toPlayer = playerDao.getPlayer(toPlayerId);
-					Account acct = accountDao.getAccount(toPlayer.getAcctId());
-
-
-					//Asynchro call to send out an Email.
-					MailUtil.sendPlayerEmail(acct.getEmail(), toPlayer.getFirstName(), content);
+					Player fromPlayer = playerDao.getPlayer(fromPlayerId);
+					if (toPlayer.getAcctId() != null) {
+						// send an email if to player has been claimed.
+						Account acct = accountDao.getAccount(toPlayer.getAcctId());
+						//Asynchro call to send out an Email.
+						new PlayerMessageEmail(acct.getEmail(), toPlayer.getFirstName(), fromPlayer, content).sendEmail();
+					} else {
+						// using player default email if no account associated yet!
+						new PlayerMessageEmail(toPlayer.getEmail(), toPlayer.getFirstName(), fromPlayer, content).sendEmail();
+					}
 				}
 			}
 			logger.info("Saved message!");

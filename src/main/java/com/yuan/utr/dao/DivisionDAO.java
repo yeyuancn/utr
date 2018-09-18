@@ -30,7 +30,7 @@ public class DivisionDAO
 
     public List<Division> getDivisionsBySeason(Long seasonId)
     {
-        logger.info("Getting divisions in the same season");
+        logger.info("Getting divisions in the season");
         EntityManager em = Startup.getEntityManager();
         try
         {
@@ -46,4 +46,23 @@ public class DivisionDAO
         }
     }
 
+
+    public Division getCatchAllDivisionBySeason(Long seasonId, String catchAllName)
+    {
+        logger.info("Getting catch all division in the season");
+        EntityManager em = Startup.getEntityManager();
+        try
+        {
+            String query = "SELECT d FROM Division d WHERE d.seasonId = :seasonId and d.name = :catchAllName";
+
+            return (Division) em.createQuery(query)
+                    .setParameter("seasonId", seasonId)
+                    .setParameter("catchAllName", catchAllName)
+                    .getSingleResult();
+        }
+        finally
+        {
+            em.close();
+        }
+    }
 }

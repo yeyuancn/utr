@@ -1,8 +1,8 @@
 package com.yuan.utr.model.persistent;
 
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
@@ -25,15 +25,48 @@ public class PlayerResultView implements Serializable
 	private int gameWon;
 	private int gameLost;
 	private BigDecimal gameWonPercent;
-	private PlayerResultViewPK key;
+	private long playerId;
+	private long divisionId;
+	private long seasonId;
 
-	@EmbeddedId
-	public PlayerResultViewPK getKey() {
-		return key;
+	private long id;
+
+	@Id
+	public long getId()
+	{
+		return id;
 	}
 
-	public void setKey(PlayerResultViewPK key) {
-		this.key = key;
+	public void setId(long id)
+	{
+		this.id = id;
+	}
+
+	@Column(name = "player_id")
+	public long getPlayerId() {
+		return playerId;
+	}
+
+	public void setPlayerId(long playerId) {
+		this.playerId = playerId;
+	}
+
+	@Column(name = "division_id")
+	public long getDivisionId() {
+		return divisionId;
+	}
+
+	public void setDivisionId(long divisionId) {
+		this.divisionId = divisionId;
+	}
+
+	@Column(name = "season_id")
+	public long getSeasonId() {
+		return seasonId;
+	}
+
+	public void setSeasonId(long seasonId) {
+		this.seasonId = seasonId;
 	}
 
 	@Column(name = "first_name")

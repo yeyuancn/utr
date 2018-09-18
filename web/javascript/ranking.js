@@ -6,27 +6,13 @@ app.controller("rankController", function ($scope, $http, $cookies) {
     init();
 
     function init() {
-        if ($cookies.get('player_id')) {
-            $scope.playerId = parseInt($cookies.get('player_id'));
-
-            // get updated data for the player
-            $http.get(playerUrl + 'getPlayer/' + $scope.playerId).success(function (data) {
-                $scope.divisionId = data.divisionId;
-
-                var player = new Object();
-                player.divisionId = $scope.divisionId;
-
-                $http.post(leagueUrl + 'allDivisions/', player).success(function (data) {
-                    $scope.divisions = data;
-                });
-
-                reloadPlayerResult();
-
-            }).error(function (data) {
-                console.log("Error getting player info: " + data.message);
+            $http.get(leagueUrl + 'getCurrentDivisions/').success(function (data) {
+                $scope.divisions = data;
             });
-
-        }
+            $http.get(leagueUrl + 'getCurrentCatchAllDivision/').success(function (data) {
+                $scope.divisionId = data.id;
+                reloadPlayerResult();
+            });
     }
 
     $scope.reload = function () {

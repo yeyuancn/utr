@@ -100,7 +100,7 @@ app.controller('registerController', function($scope, $http, $window, $cookies) 
 			//player logged in after successful registration
 			$cookies.put("player_id",player.id);
             $cookies.put("player_fname",player.firstName);
-            $window.location.href = "season.html";
+            $window.location.href = "match.html";
         }).error(function (data) {
             $scope.failedReg = true;
             $scope.errorMessage = data.message;

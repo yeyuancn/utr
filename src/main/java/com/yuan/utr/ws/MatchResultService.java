@@ -1,7 +1,10 @@
 package com.yuan.utr.ws;
 
+import com.yuan.utr.dao.DivisionDAO;
+import com.yuan.utr.dao.LeagueDAO;
 import com.yuan.utr.dao.MatchResultDAO;
 import com.yuan.utr.dao.PlayerResultDAO;
+import com.yuan.utr.model.persistent.Division;
 import com.yuan.utr.model.persistent.MatchResult;
 import com.yuan.utr.model.persistent.MatchResultView;
 import com.yuan.utr.model.persistent.PlayerResultView;
@@ -29,7 +32,7 @@ public class MatchResultService {
 
     private MatchResultDAO matchResultDao = new MatchResultDAO();
     private PlayerResultDAO playerResultDao = new PlayerResultDAO();
-
+    private DivisionDAO divisionDAO = new DivisionDAO();
 
     @GET
     @Path("/matchResult/{i}")
@@ -38,17 +41,21 @@ public class MatchResultService {
         return matchResultDao.getMatchResult(id);
     }
 
+    //----------------------
 
     @GET
     @Path("/matchResults/{divisionId}")
     @Produces(MediaType.APPLICATION_JSON)
     public MatchResultView[] getMatchResultViews(@PathParam("divisionId") long divisionId) {
-        List<MatchResultView> matchResultViews = matchResultDao.getMatchResultViews(divisionId);
-        return matchResultViews.toArray(new MatchResultView[matchResultViews.size()]);
+        Division d = divisionDAO.getDivision(divisionId);
+        if (d.getName().equals(LeagueService.CATCH_ALL_DIVISION_NAME)) {
+            List<MatchResultView> matchResultViews = matchResultDao.getMatchResultViewsBySeason(d.getSeasonId());
+            return matchResultViews.toArray(new MatchResultView[matchResultViews.size()]);
+        } else {
+            List<MatchResultView> matchResultViews = matchResultDao.getMatchResultViewsByDivision(divisionId);
+            return matchResultViews.toArray(new MatchResultView[matchResultViews.size()]);
+        }
     }
-
-
-    //----------------------
 
 
     @DELETE
@@ -90,7 +97,13 @@ public class MatchResultService {
     @Produces(MediaType.APPLICATION_JSON)
     public PlayerResultView[] getPlayerResultViews(@PathParam("divisionId") long divisionId)
     {
-        List<PlayerResultView> playerResultViews = playerResultDao.getAllPlayerResultViews(divisionId);
-        return playerResultViews.toArray(new PlayerResultView[playerResultViews.size()]);
+        Division d = divisionDAO.getDivision(divisionId);
+        if (d.getName().equals(LeagueService.CATCH_ALL_DIVISION_NAME)) {
+            List<PlayerResultView> playerResultViews = playerResultDao.getPlayerResultViewsBySeason(d.getSeasonId());
+            return playerResultViews.toArray(new PlayerResultView[playerResultViews.size()]);
+        } else {
+            List<PlayerResultView> playerResultViews = playerResultDao.getPlayerResultViewsByDivision(divisionId);
+            return playerResultViews.toArray(new PlayerResultView[playerResultViews.size()]);
+        }
     }
 }

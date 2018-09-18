@@ -21,6 +21,8 @@ public class MatchResultView implements Serializable
 
     private long divisionId;
 
+	private long seasonId;
+
 	private long winnerId;
 
 	private String winnerFName;
@@ -65,6 +67,15 @@ public class MatchResultView implements Serializable
 
 	public void setDivisionId(long divisionId) {
 		this.divisionId = divisionId;
+	}
+
+	@Column(name = "season_id")
+	public long getSeasonId() {
+		return seasonId;
+	}
+
+	public void setSeasonId(long seasonId) {
+		this.seasonId = seasonId;
 	}
 
 	@Column(name = "winner_id")

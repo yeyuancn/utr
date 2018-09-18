@@ -23,8 +23,10 @@ public class MatchResultDAO {
         }
     }
 
+    //-----------------------------
+
     public Long getMatchResultNumber() {
-        logger.info("Getting matchresult number");
+        logger.info("Getting match result number");
 
         EntityManager em = Startup.getEntityManager();
         try {
@@ -34,8 +36,6 @@ public class MatchResultDAO {
             em.close();
         }
     }
-
-    //-----------------------------
 
     public List<MatchResultView> getMatchResultViewsForPlayer(long playerId) {
         logger.info("Getting all match Results for a player");
@@ -64,13 +64,26 @@ public class MatchResultDAO {
         }
     }
 
-    public List<MatchResultView> getMatchResultViews(long divisionId) {
+    public List<MatchResultView> getMatchResultViewsByDivision(long divisionId) {
         logger.info("Getting all match results for the division");
         EntityManager em = Startup.getEntityManager();
         try {
             Query q = em.createQuery("SELECT u FROM MatchResultView u where u.divisionId = :divisionId " +
                     "order by record_time desc")
                     .setParameter("divisionId", divisionId);
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<MatchResultView> getMatchResultViewsBySeason(long seasonId) {
+        logger.info("Getting all match results for the division");
+        EntityManager em = Startup.getEntityManager();
+        try {
+            Query q = em.createQuery("SELECT u FROM MatchResultView u where u.seasonId = :seasonId " +
+                    "order by record_time desc")
+                    .setParameter("seasonId", seasonId);
             return q.getResultList();
         } finally {
             em.close();

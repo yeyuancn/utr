@@ -16,19 +16,7 @@ public class PlayerDAO
 
     private static final Logger logger = Logger.getLogger(PlayerDAO.class.getName());
 
-    public Player getPlayer(long id)
-    {
-        logger.info("Getting player");
-        EntityManager em = Startup.getEntityManager();
-        try
-        {
-            return em.find(Player.class, id);
-        }
-        finally
-        {
-            em.close();
-        }
-    }
+
 
     public void addPlayer(Player player) throws AppValidationException
     {
@@ -70,6 +58,7 @@ public class PlayerDAO
         }
     }
 
+    //----------------------------------------
     public Long getPlayerNumber()
     {
         logger.info("Getting players number");
@@ -86,7 +75,20 @@ public class PlayerDAO
         }
     }
 
-    //----------------------------------------
+    public Player getPlayer(long id)
+    {
+        logger.info("Getting player");
+        EntityManager em = Startup.getEntityManager();
+        try
+        {
+            return em.find(Player.class, id);
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+
     public Player getPlayerByAcctId(long acctId) throws AppValidationException {
         logger.info("Getting the playe associated with the account id " + acctId);
         EntityManager em = Startup.getEntityManager();

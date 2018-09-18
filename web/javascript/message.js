@@ -1,32 +1,43 @@
 app.controller("messageController", function($scope, $http, $window, $cookies) {
-
 	var messageUrl = rest_url + "MessageService/";
 	var matchUrl = rest_url + "MatchResultService/";
+    var playerUrl = rest_url + "PlayerService/";
 
 	init();
 
 	function init() {
-		$scope.uid = $cookies.get('player_id');
-		$scope.leagueId = $cookies.get('league_id');
-		$scope.selected = {};
-		$scope.reply = {};
-		$scope.replyContent = {};
-		$scope.replyError = {};
-		$scope.replyErrorMessage = {};
-		$scope.replySuccess = {};
-		var mode = $cookies.get('message_mode');
-		if (mode == 1)
-		{
-			switchInbox();
-		}
-		else if(mode == 2)
-		{
-			switchOutbox();
-		}
-		else
-		{
-			switchNew();
-		}
+		console.info("INIT");
+        if ($cookies.get('player_id')) {
+            $scope.playerId = parseInt($cookies.get('player_id'));
+
+            // get updated data for the player
+            $http.get(playerUrl + 'getPlayer/' + $scope.playerId).success(function (data) {
+                $scope.divisionId = data.divisionId;
+
+                $scope.selected = {};
+                $scope.reply = {};
+                $scope.replyContent = {};
+                $scope.replyError = {};
+                $scope.replyErrorMessage = {};
+                $scope.replySuccess = {};
+                var mode = $cookies.get('message_mode');
+                if (mode == 1)
+                {
+                    switchInbox();
+                }
+                else if(mode == 2)
+                {
+                    switchOutbox();
+                }
+                else
+                {
+                    switchNew();
+                }
+
+            }).error(function (data) {
+                console.log("Error getting player info: " + data.message);
+            });
+        }
 	}
 
 	$scope.switchOutbox = function() {
@@ -67,7 +78,7 @@ app.controller("messageController", function($scope, $http, $window, $cookies) {
 		else
 		{
 			var message = new Object();
-			message.fromPlayerId = $scope.uid;
+			message.fromPlayerId = $scope.playerId;
 			message.toPlayerIds = fromPlayerId + ":";
 			message.content = $scope.replyContent[id];
 			$http.post(messageUrl + 'saveMessage/', message).success(function () {
@@ -82,7 +93,7 @@ app.controller("messageController", function($scope, $http, $window, $cookies) {
 		}
 	};
 
-	$scope.sendEmail = function() {
+	$scope.sendMessage = function() {
 		$scope.sendError = false;
 		$scope.sendSuccess = false;
 		$scope.errorMessage = "";
@@ -108,9 +119,9 @@ app.controller("messageController", function($scope, $http, $window, $cookies) {
 		}
 		else
 		{
-			console.log("sending email to id " + targetIds + ", content " + $scope.content);
+			console.log("sending message to id " + targetIds + ", content " + $scope.content);
 			var message = new Object();
-			message.fromPlayerId = $scope.uid;
+			message.fromPlayerId = $scope.playerId;
 			message.toPlayerIds = targetIds;
 			message.content = $scope.content;
 			$http.post(messageUrl + 'saveMessage/', message).success(function () {
@@ -118,7 +129,7 @@ app.controller("messageController", function($scope, $http, $window, $cookies) {
 				$scope.sendSuccess = true;
 				$scope.content = "";
 				$scope.selected = {};
-				$scope.master = false;
+				$scope.selectEveryone = false;
 			}).error(function (data) {
 				$scope.sendError = true;
 				$scope.errorMessage = data.message;
@@ -144,25 +155,14 @@ app.controller("messageController", function($scope, $http, $window, $cookies) {
 	};
 
 	$scope.selectAll = function() {
-		var length = $scope.playerResults.length;
-		for (var i = 0; i < length; i ++)
-		{
-			var obj = $scope.playerResults[i];
-			if ($scope.master && obj.playerId != $scope.uid) {
+		if ($scope.selectEveryone) {
+            var length = $scope.playerResults.length;
+            for (var i = 0; i < length; i ++)
+            {
+                var obj = $scope.playerResults[i];
 				$scope.selected[obj.playerId] = true;
-			}
-			else {
-				$scope.selected[obj.playerId] = false;
-			}
+            }
 		}
-	};
-
-	$scope.isSameAsUser = function(playerId) {
-		if ($scope.uid == playerId)
-		{
-			return true;
-		}
-		return false;
 	};
 
 	function switchInbox()
@@ -172,7 +172,7 @@ app.controller("messageController", function($scope, $http, $window, $cookies) {
 		$scope.isOutboxActive = false;
 		$scope.isNewActive = false;
 
-		$http.get(messageUrl + 'messagesToPlayer/' + $scope.uid).
+		$http.get(messageUrl + 'messagesToPlayer/' + $scope.playerId).
 		success(function(data) {
 			$scope.messages = data;
 		});
@@ -185,7 +185,7 @@ app.controller("messageController", function($scope, $http, $window, $cookies) {
 		$scope.isOutboxActive = true;
 		$scope.isNewActive = false;
 
-		$http.get(messageUrl + 'messagesFromPlayer/' + $scope.uid).
+		$http.get(messageUrl + 'messagesFromPlayer/' + $scope.playerId).
 		success(function(data) {
 			$scope.messages = data;
 		});
@@ -200,8 +200,7 @@ app.controller("messageController", function($scope, $http, $window, $cookies) {
 		$scope.sendError = false;
 		$scope.sendSuccess = false;
 
-		$http.get(matchUrl + 'currentPlayerResults/' + $scope.leagueId).
-		success(function(data) {
+		$http.get(matchUrl + 'playerResults/' + $scope.divisionId).success(function(data) {
 			$scope.playerResults = data;
 		});
 	}

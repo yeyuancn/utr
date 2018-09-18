@@ -159,15 +159,32 @@ public class PlayerResultDAO {
         }
     }
 
-    public List<PlayerResultView> getAllPlayerResultViews(long divisionId)
+    public List<PlayerResultView> getPlayerResultViewsByDivision(long divisionId)
     {
         logger.info("Getting all playerResultView for the division");
         EntityManager em = Startup.getEntityManager();
         try
         {
-            Query q = em.createQuery("SELECT p FROM PlayerResultView p where p.key.divisionId = :divisionId " +
+            Query q = em.createQuery("SELECT p FROM PlayerResultView p where p.divisionId = :divisionId " +
                     "order by match_won desc, match_won_percent desc, game_won_percent desc, match_lost desc")
                     .setParameter("divisionId", divisionId);
+            return q.getResultList();
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+
+    public List<PlayerResultView> getPlayerResultViewsBySeason(long seasonId)
+    {
+        logger.info("Getting all playerResultView for the season");
+        EntityManager em = Startup.getEntityManager();
+        try
+        {
+            Query q = em.createQuery("SELECT p FROM PlayerResultView p where p.seasonId = :seasonId " +
+                    "order by match_won desc, match_won_percent desc, game_won_percent desc, match_lost desc")
+                    .setParameter("seasonId", seasonId);
             return q.getResultList();
         }
         finally

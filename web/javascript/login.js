@@ -13,7 +13,7 @@ app.controller('loginController', function ($scope, $http, $window, $cookies) {
             //player logged in
             $cookies.put("player_id",player.id);
             $cookies.put("player_fname",player.firstName);
-            $window.location.href = "season.html";
+            $window.location.href = "match.html";
 
         }).error(function (data) {
             $scope.login_error = true;

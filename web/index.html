@@ -28,8 +28,8 @@
                     <ul class="nav nav-pills pull-right">
                         <li class="active"><a href="index.html">Home</a></li>
                         <li><a href="rule.html">Rules</a></li>
-                        <li><a href="season.html">Season</a></li>
                         <li><a href="ranking.html">Ranking</a></li>
+                        <li><a href="match.html">Matches</a></li>
                         <li><a href="message.html">Messages</a></li>
                     </ul>
                 </nav>
@@ -80,18 +80,7 @@
                     <tr>
                         <td style="min-width: 200px; white-space:nowrap; background-color: #dcdcdc">
                             <div ng-controller="loginController">
-
                                 <hr>
-
-                                <div style="text-align:center"><button class="btn btn-success" ng-click="register()">
-                                        <span class="glyphicon glyphicon-pencil"></span> Register Now
-                                </button>
-                                </div>
-
-                                <hr>
-
-                                <p></p>
-
                                 <h4 style="color:darkgreen">Existing player login</h4>
                                 <p></p>
                                 <form class="form-horizontal">
@@ -109,7 +98,7 @@
                                     </div>
                                     <hr>
 
-                                    <div style="text-align:center">
+                                    <div style="text-align:left">
                                     <button class="btn btn-success" ng-click="login()">
                                         <span class="glyphicon glyphicon-save"></span> Login
                                     </button>
@@ -118,6 +107,20 @@
                                 </form>
 
                                 <div class="red" ng-show="login_error">{{ login_errorMessage }}</div>
+
+                                <hr>
+
+                                <h4 style="color:darkgreen">Not a member yet?</h4>
+                                <p></p>
+
+                                <div style="text-align:center"><button class="btn btn-success" ng-click="register()">
+                                    <span class="glyphicon glyphicon-pencil"></span> Register Now
+                                </button>
+                                </div>
+
+                                <hr>
+
+
                             </div>
                         </td>
                     </tr>
