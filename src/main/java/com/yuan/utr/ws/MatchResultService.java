@@ -78,6 +78,8 @@ public class MatchResultService {
 
         result = MatchResultHelper.decorateMatchResult(result);
         logger.info("updating match result table");
+        Division d = divisionDAO.getDivision(result.getDivisionId());
+        result.setSeasonId(d.getSeasonId());
         matchResultDao.addMatchResult(result);
         logger.info("updating player result table");
         playerResultDao.addMatchResult(result);

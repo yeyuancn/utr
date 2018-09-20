@@ -95,11 +95,10 @@ app.controller('registerController', function($scope, $http, $window, $cookies) 
         newAccount.firstName = $scope.fName.trim();
         newAccount.lastName = $scope.lName.trim();
 
-        $http.post(accountUrl + 'createAccount/', newAccount).success(function(player){
+        $http.post(accountUrl + 'createAccount/', newAccount).success(function(session){
 
 			//player logged in after successful registration
-			$cookies.put("player_id",player.id);
-            $cookies.put("player_fname",player.firstName);
+			$cookies.put("utr_session_uuid", session.uuid);
             $window.location.href = "match.html";
         }).error(function (data) {
             $scope.failedReg = true;

@@ -3,12 +3,14 @@ app.controller("messageController", function($scope, $http, $window, $cookies) {
 	var matchUrl = rest_url + "MatchResultService/";
     var playerUrl = rest_url + "PlayerService/";
 
-	init();
+    checkLogin($cookies, $http, init);
 
-	function init() {
-		console.info("INIT");
-        if ($cookies.get('player_id')) {
+	function init(result) {
+        $scope.loggedIn = result;
+        if ($scope.loggedIn) {
+
             $scope.playerId = parseInt($cookies.get('player_id'));
+            $scope.firstName = $cookies.get('first_name');
 
             // get updated data for the player
             $http.get(playerUrl + 'getPlayer/' + $scope.playerId).success(function (data) {
@@ -40,7 +42,12 @@ app.controller("messageController", function($scope, $http, $window, $cookies) {
         }
 	}
 
-	$scope.switchOutbox = function() {
+    $scope.logout = function () {
+        cleanCookie($cookies);
+        $scope.loggedIn = false;
+    }
+
+    $scope.switchOutbox = function() {
 		switchOutbox();
 	};
 

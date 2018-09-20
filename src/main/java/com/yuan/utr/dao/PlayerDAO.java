@@ -90,7 +90,7 @@ public class PlayerDAO
     }
 
     public Player getPlayerByAcctId(long acctId) throws AppValidationException {
-        logger.info("Getting the playe associated with the account id " + acctId);
+        logger.info("Getting the player associated with the account id " + acctId);
         EntityManager em = Startup.getEntityManager();
         try {
             String query = "SELECT p FROM Player p WHERE p.acctId = :acctId";

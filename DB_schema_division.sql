@@ -66,6 +66,7 @@ drop table if exists match_result;
 create table match_result
 (id MEDIUMINT NOT NULL AUTO_INCREMENT,
 division_id mediumint,
+season_id mediumint,
 winner_id mediumint,
 loser_id mediumint,
 set1_score char(5),
@@ -83,6 +84,7 @@ primary key(id)
 alter table match_result add index(winner_id);
 alter table match_result add index(loser_id);
 alter table match_result add index(division_id);
+alter table match_result add index(season_id);
 
 drop table if exists player_result;
 create table player_result
@@ -90,6 +92,7 @@ create table player_result
 id MEDIUMINT NOT NULL AUTO_INCREMENT,
 player_id mediumint,
 division_id mediumint,
+season_id mediumint,
 match_won int,
 match_lost int,
 match_won_percent decimal(5,2),
@@ -101,22 +104,20 @@ unique key(player_id, division_id)
 ) engine =myisam;
 alter table player_result add index(player_id);
 alter table player_result add index(division_id);
+alter table player_result add index(season_id);
 
 
-
-CREATE VIEW match_result_view AS SELECT m.id, m.division_id, m.winner_id, m.loser_id, m.set1_score, m.set2_score, m.set3_score,
+CREATE VIEW match_result_view AS SELECT m.id, m.division_id, m.season_id, m.winner_id, m.loser_id, m.set1_score, m.set2_score, m.set3_score,
                                    m.match_score, m.enter_by_winner, m.match_date, m.record_time, m.match_memo,
                                    u1.first_name as winner_first_name, u1.last_name as winner_last_name,
-                                   u2.first_name as loser_first_name, u2.last_name as loser_last_name, d.season_id
-                            FROM match_result m join player u1 join player u2 join division d
-                            where m.winner_id = u1.id and m.loser_id = u2.id and m.division_id = d.id;
+                                   u2.first_name as loser_first_name, u2.last_name as loser_last_name
+                            FROM match_result m join player u1 join player u2
+                            where m.winner_id = u1.id and m.loser_id = u2.id;
 
 CREATE VIEW player_result_view AS SELECT pr.id, pr.match_won, pr.match_lost, pr.match_won_percent,
-            pr.game_won, pr.game_lost, pr.game_won_percent, pr.division_id, d.season_id,
+            pr.game_won, pr.game_lost, pr.game_won_percent, pr.division_id, pr.season_id,
             p.id as player_id, p.first_name, p.last_name
-            FROM player_result pr join player p join division d where pr.player_id = p.id and pr.division_id = d.id;
-
-
+            FROM player_result pr join player p where pr.player_id = p.id;
 
 -- data
 insert into player_result(player_id, division_id, match_won, match_lost, match_won_percent, game_won, game_lost, game_won_percent) values (1, 2, 0, 0, 0.0, 0, 0, 0.0);
@@ -206,3 +207,6 @@ insert into player_result(player_id, division_id, match_won, match_lost, match_w
 insert into player_result(player_id, division_id, match_won, match_lost, match_won_percent, game_won, game_lost, game_won_percent) values (85, 10, 0, 0, 0.0, 0, 0, 0.0);
 insert into player_result(player_id, division_id, match_won, match_lost, match_won_percent, game_won, game_lost, game_won_percent) values (86, 10, 0, 0, 0.0, 0, 0, 0.0);
 insert into player_result(player_id, division_id, match_won, match_lost, match_won_percent, game_won, game_lost, game_won_percent) values (87, 10, 0, 0, 0.0, 0, 0, 0.0);
+
+
+UPDATE player_result pr JOIN division d ON pr.division_id = d.id SET pr.season_id = d.season_id;

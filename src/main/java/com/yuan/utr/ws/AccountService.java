@@ -2,8 +2,10 @@ package com.yuan.utr.ws;
 
 import com.yuan.utr.dao.AccountDAO;
 import com.yuan.utr.dao.PlayerDAO;
+import com.yuan.utr.dao.SessionDAO;
 import com.yuan.utr.model.persistent.Account;
 import com.yuan.utr.model.persistent.Player;
+import com.yuan.utr.model.persistent.Session;
 import com.yuan.utr.ws.exception.AppValidationException;
 import com.yuan.utr.ws.util.email.template.JoinLeagueEmail;
 import com.yuan.utr.ws.util.email.template.PasswordResetEmail;
@@ -28,6 +30,8 @@ public class AccountService {
     private AccountDAO accountDao = new AccountDAO();
 
     private PlayerDAO playerDao = new PlayerDAO();
+
+    private SessionDAO sessionDAO = new SessionDAO();
 
     private static Random random = new Random();
 
@@ -58,7 +62,7 @@ public class AccountService {
     @Path("/createAccount")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Player createAccount(Account a) throws AppValidationException {
+    public Session createAccount(Account a) throws AppValidationException {
         // First check if firstName/lastName is valid for the new account to pick up
         Player player = playerDao.getPlayerByName(a.getFirstName(), a.getLastName());
         if (player.getDivisionId() == null || player.getDivisionId() == 0) {
@@ -78,14 +82,14 @@ public class AccountService {
 
         new JoinLeagueEmail(a.getEmail(), player.getFirstName()).sendEmail();
 
-        return player;
+        return sessionDAO.createSessionForPlayer(player.getId());
     }
 
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Player login(Account a) throws AppValidationException {
+    public Session login(Account a) throws AppValidationException {
         Account account = accountDao.login(a.getEmail(), a.getPassword());
 
         if (account == null) {
@@ -95,7 +99,8 @@ public class AccountService {
         if (p.getDivisionId() == null || p.getDivisionId() == 0) {
             throw new AppValidationException("This player is not registered in any league, cannot login.");
         }
-        return p;
+
+        return sessionDAO.createSessionForPlayer(p.getId());
     }
 
     @POST
@@ -119,5 +124,14 @@ public class AccountService {
     @Consumes(MediaType.APPLICATION_JSON)
     public void updatePassword(Account account) throws AppValidationException {
         accountDao.updatePassword(account);
+    }
+
+    @POST
+    @Path("/validateUUID")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Player validateUuid(Session session) throws AppValidationException {
+        Session s = sessionDAO.getActiveSessionByUUID(session.getUuid());
+        return playerDao.getPlayer(s.getPlayerId());
     }
 }

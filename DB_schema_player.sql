@@ -1,3 +1,14 @@
+drop table if exists session;
+create table session
+(id MEDIUMINT NOT NULL AUTO_INCREMENT,
+ uuid varchar(40),
+ player_id mediumint,
+ expire_date DATETIME,
+ primary key(id),
+ unique key(uuid)
+) engine = myisam;
+alter table session add index(uuid);
+
 drop table if exists acct;
 create table acct
 (id MEDIUMINT NOT NULL AUTO_INCREMENT,
@@ -28,8 +39,6 @@ primary key(id)
 alter table player add index(acct_id);
 alter table player add index(division_id);
 alter table player add index(first_name, last_name);
-
-
 
 insert into player (first_name, last_name, email, phone, utr_score) values ('Aakarsh','Vermani','aakarshver@gmail.com','18588484530', 8.54);
 insert into player (first_name, last_name, email, phone, utr_score) values ('Calvin','Cheah','joseph30005@yahoo.com','18584725433', 7.85);

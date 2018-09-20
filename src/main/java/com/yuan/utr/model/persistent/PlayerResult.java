@@ -23,6 +23,8 @@ public class PlayerResult implements Serializable
 
 	private long divisionId;
 
+	private long seasonId;
+
 	private int matchWon;
 
 	private int matchLost;
@@ -62,6 +64,15 @@ public class PlayerResult implements Serializable
 
 	public void setDivisionId(long divisionId) {
 		this.divisionId = divisionId;
+	}
+
+	@Column(name = "season_id")
+	public long getSeasonId() {
+		return seasonId;
+	}
+
+	public void setSeasonId(long seasonId) {
+		this.seasonId = seasonId;
 	}
 
 	@Column(name = "match_won")

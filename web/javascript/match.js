@@ -3,8 +3,6 @@ app.controller("matchController", function ($scope, $http, $cookies) {
     var matchUrl = rest_url + "MatchResultService/";
     var leagueUrl = rest_url + "LeagueService/";
 
-    init();
-
     $scope.submit = function () {
         $scope.sendError = false;
         $scope.sendSuccess = false;
@@ -44,10 +42,13 @@ app.controller("matchController", function ($scope, $http, $cookies) {
         return false;
     };
 
-    function init() {
-        if ($cookies.get('player_id')) {
+    checkLogin($cookies, $http, init);
 
+    function init(result) {
+        $scope.loggedIn = result;
+        if ($scope.loggedIn) {
             $scope.playerId = parseInt($cookies.get('player_id'));
+            $scope.firstName = $cookies.get('first_name');
 
             // get updated data for the player
             $http.get(playerUrl + 'getPlayer/' + $scope.playerId).success(function (data) {
@@ -76,6 +77,11 @@ app.controller("matchController", function ($scope, $http, $cookies) {
                 console.log("Error getting player info: " + data.message);
             });
         }
+    }
+
+    $scope.logout = function () {
+        cleanCookie($cookies);
+        $scope.loggedIn = false;
     }
 
     $scope.$watch('opponent', function () {

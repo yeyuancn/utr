@@ -1,18 +1,31 @@
 app.controller('loginController', function ($scope, $http, $window, $cookies) {
     var accountUrl = rest_url + "AccountService/";
-    var registerUrl = "register.html";
 
-    $scope.login_error = false;
+    checkLogin($cookies, $http, init);
+
+    function init(result) {
+        $scope.login_error = false;
+
+        $scope.loggedIn = result;
+        if ($scope.loggedIn) {
+            $scope.firstName = $cookies.get('first_name');
+        }
+    }
+
+    $scope.logout = function () {
+        cleanCookie($cookies);
+        $scope.loggedIn = false;
+    }
 
     $scope.login = function () {
         var newAccount = new Object();
         newAccount.email = $scope.login_email.trim();
         newAccount.password = $scope.login_passwd.trim();
 
-        $http.post(accountUrl + 'login/', newAccount).success(function (player) {
+        $http.post(accountUrl + 'login/', newAccount).success(function (session) {
             //player logged in
-            $cookies.put("player_id",player.id);
-            $cookies.put("player_fname",player.firstName);
+            console.info("session id " + session.uuid);
+            $cookies.put("utr_session_uuid", session.uuid);
             $window.location.href = "match.html";
 
         }).error(function (data) {
@@ -22,7 +35,7 @@ app.controller('loginController', function ($scope, $http, $window, $cookies) {
     };
 
     $scope.register = function () {
-        window.location.href=registerUrl;
+        window.location.href="register.html";
     };
 
 });

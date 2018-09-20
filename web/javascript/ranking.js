@@ -1,18 +1,27 @@
 app.controller("rankController", function ($scope, $http, $cookies) {
     var matchUrl = rest_url + "MatchResultService/";
     var leagueUrl = rest_url + "LeagueService/";
-    var playerUrl = rest_url + "PlayerService/";
 
-    init();
+    checkLogin($cookies, $http, init);
 
-    function init() {
-            $http.get(leagueUrl + 'getCurrentDivisions/').success(function (data) {
+    function init(result) {
+        $scope.loggedIn = result;
+        if ($scope.loggedIn) {
+            $scope.firstName = $cookies.get('first_name');
+        }
+
+        $http.get(leagueUrl + 'getCurrentDivisions/').success(function (data) {
                 $scope.divisions = data;
-            });
-            $http.get(leagueUrl + 'getCurrentCatchAllDivision/').success(function (data) {
-                $scope.divisionId = data.id;
-                reloadPlayerResult();
-            });
+        });
+        $http.get(leagueUrl + 'getCurrentCatchAllDivision/').success(function (data) {
+            $scope.divisionId = data.id;
+            reloadPlayerResult();
+        });
+    }
+
+    $scope.logout = function () {
+        cleanCookie($cookies);
+        $scope.loggedIn = false;
     }
 
     $scope.reload = function () {
