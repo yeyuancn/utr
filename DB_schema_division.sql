@@ -69,11 +69,11 @@ division_id mediumint,
 season_id mediumint,
 winner_id mediumint,
 loser_id mediumint,
+loser_default boolean,
 set1_score char(5),
 set2_score char(5),
 set3_score char(5),
 match_score char(5),
-enter_by_winner boolean,
 game_won smallint,
 game_lost smallint,
 match_date DATETIME,
@@ -108,7 +108,7 @@ alter table player_result add index(season_id);
 
 
 CREATE VIEW match_result_view AS SELECT m.id, m.division_id, m.season_id, m.winner_id, m.loser_id, m.set1_score, m.set2_score, m.set3_score,
-                                   m.match_score, m.enter_by_winner, m.match_date, m.record_time, m.match_memo,
+                                   m.match_score, m.loser_default, m.match_date, m.record_time, m.match_memo,
                                    u1.first_name as winner_first_name, u1.last_name as winner_last_name,
                                    u2.first_name as loser_first_name, u2.last_name as loser_last_name
                             FROM match_result m join player u1 join player u2

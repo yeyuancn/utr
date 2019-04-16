@@ -34,8 +34,8 @@ public class Startup implements ServletContextListener {
 
 		TimerTask timerTask = new LeagueTimerTask();
 		Timer timer = new Timer(true);
-		long fourHourMill = 3600l * 1000 * 4;
-		timer.scheduleAtFixedRate(timerTask, 3000, fourHourMill);
+		long interval = 3600l * 1000 * 2;
+		timer.scheduleAtFixedRate(timerTask, 3000, interval);
 		logger.info("Scheduled monitor service for every four hour");
 	}
     

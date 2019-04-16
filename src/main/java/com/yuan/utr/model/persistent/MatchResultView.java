@@ -43,7 +43,7 @@ public class MatchResultView implements Serializable
 
 	private String matchScore;
 
-	private int enterByWinner;
+	private boolean loserDefault;
 
 	private Date matchDate;
 
@@ -159,7 +159,6 @@ public class MatchResultView implements Serializable
 		this.set3Score = set3Score;
 	}
 
-
 	@Column(name = "match_score")
 	public String getMatchScore() {
 		return matchScore;
@@ -169,15 +168,15 @@ public class MatchResultView implements Serializable
 		this.matchScore = matchScore;
 	}
 
-	@Column(name = "enter_by_winner")
-	public int getEnterByWinner()
+	@Column(name = "loser_default")
+	public boolean getLoserDefault()
 	{
-		return enterByWinner;
+		return loserDefault;
 	}
 
-	public void setEnterByWinner(int enterByWinner)
+	public void setLoserDefault(boolean loserDefault)
 	{
-		this.enterByWinner = enterByWinner;
+		this.loserDefault = loserDefault;
 	}
 
 	@Column(name = "record_time")

@@ -17,16 +17,7 @@ public class MatchResultHelper {
 	public static MatchResult decorateMatchResult(MatchResult result) throws AppValidationException
 	{
 		validateMatchResult(result);
-		if (needRevert(result.getSet1Score(), result.getSet2Score(), result.getSet3Score()))
-		{
-			long tmpId = result.getWinnerId();
-			result.setWinnerId(result.getLoserId());
-			result.setLoserId(tmpId);
-			result.setSet1Score(revertScore(result.getSet1Score()));
-			result.setSet2Score(revertScore(result.getSet2Score()));
-			result.setSet3Score(revertScore(result.getSet3Score()));
-			result.setEnterByWinner(false);
-		}
+
 		int setWon = 0, setLost = 0;
 		if (isWinnerScore(result.getSet1Score()) == 1)
 		{
@@ -82,9 +73,15 @@ public class MatchResultHelper {
 		String score3 = result.getSet3Score();
 		validateSetResult(score3);
 
-		if (isWinnerScore(score1) + isWinnerScore(score2) + isWinnerScore(score3) == 0)
+		int count = isWinnerScore(score1) + isWinnerScore(score2) + isWinnerScore(score3);
+
+		if (count == 0 && result.getLoserDefault() == false)
 		{
-			throw new AppValidationException("Invalid Score, Cannot decide winner!");
+			throw new AppValidationException("Invalid Score, Cannot determine the winner!");
+		}
+		if (count < 0 && result.getLoserDefault() == false)
+		{
+			throw new AppValidationException("Invalid Score, Only winner can submit score!");
 		}
 	}
 
@@ -128,20 +125,6 @@ public class MatchResultHelper {
 			result.setGameLost(result.getGameLost() + gameLost);
 		}
 	}
-
-
-	private static boolean needRevert(String score1, String score2, String score3)
-	{
-		int count = isWinnerScore(score1) + isWinnerScore(score2) + isWinnerScore(score3);
-		if (count < 0)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
 	
 	private static int isWinnerScore(String score)
 	{
@@ -164,19 +147,6 @@ public class MatchResultHelper {
 			{
 				return -1;
 			}
-		}
-	}
-	
-	private static String revertScore(String score)
-	{
-		String[] parts = score.split(":");
-		if (parts.length != 2)
-		{
-			return score;
-		}
-		else
-		{
-			return parts[1] + ":" + parts[0];
 		}
 	}
 }

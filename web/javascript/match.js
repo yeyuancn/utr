@@ -15,7 +15,7 @@ app.controller("matchController", function ($scope, $http, $cookies) {
         result.set2Score = $scope.score_you2 + ":" + $scope.score_opp2;
         result.set3Score = $scope.score_you3 + ":" + $scope.score_opp3;
         result.matchMemo = $scope.matchMemo;
-        result.enterByWinner = true;
+        result.loserDefault = $scope.loserDefault;
 
         var values = $scope.matchDate.split('/');
         result.matchDate = new Date(parseInt(values[2]), parseInt(values[0]) - 1, parseInt(values[1]), 0, 0, 0, 0);
@@ -58,6 +58,7 @@ app.controller("matchController", function ($scope, $http, $cookies) {
                 $scope.resultDivisionId = $scope.divisionId;
                 $scope.oppRequired = true;
                 $scope.scoreRange = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+                $scope.loserDefault = false;
 
                 var player = new Object();
                 player.id = $scope.playerId;

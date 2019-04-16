@@ -17,7 +17,23 @@ import java.util.List;
 public class PlayerResultDAO {
 	
 	private static final Logger logger = Logger.getLogger(PlayerResultDAO.class.getName());
-    
+
+    public Long getPlayerResultNumber()
+    {
+        logger.info("Getting player results number");
+
+        EntityManager em = Startup.getEntityManager();
+        try
+        {
+            Query q = em.createQuery("SELECT count(pr) from PlayerResult pr");
+            return (Long) q.getSingleResult();
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+
     public PlayerResult addPlayerResult(PlayerResult playerResult)
     {
     	logger.info("Persisting playerResult, add player result");

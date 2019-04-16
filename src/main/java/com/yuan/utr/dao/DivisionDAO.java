@@ -6,12 +6,29 @@ import com.yuan.utr.model.persistent.Season;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 
 public class DivisionDAO
 {
 
     private static final Logger logger = Logger.getLogger(DivisionDAO.class.getName());
+
+    public Long getDivisionNumber()
+    {
+        logger.info("Getting divisions number");
+
+        EntityManager em = Startup.getEntityManager();
+        try
+        {
+            Query q = em.createQuery("SELECT count(d) from Division d");
+            return (Long) q.getSingleResult();
+        }
+        finally
+        {
+            em.close();
+        }
+    }
 
 
     public Division getDivision(long id)

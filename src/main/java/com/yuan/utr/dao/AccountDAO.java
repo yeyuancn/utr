@@ -10,6 +10,7 @@ import org.hibernate.criterion.Restrictions;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.RollbackException;
 import java.util.Date;
 
@@ -50,6 +51,21 @@ public class AccountDAO {
     }
 
 //------------------------------
+public Long getAccountNumber()
+{
+    logger.info("Getting accounts number");
+
+    EntityManager em = Startup.getEntityManager();
+    try
+    {
+        Query q = em.createQuery("SELECT count(a) from Account a");
+        return (Long) q.getSingleResult();
+    }
+    finally
+    {
+        em.close();
+    }
+}
 
     public Account getAccountByIdAndKey(long accountId, int key) throws AppValidationException {
         logger.info("Getting account id: " + accountId + ", key " + key);

@@ -36,7 +36,7 @@ public class MatchResult implements Serializable
 
     private int gameLost;
 
-    private boolean enterByWinner;
+    private boolean loserDefault;
 
     private Date matchDate;
 
@@ -130,15 +130,15 @@ public class MatchResult implements Serializable
         this.matchScore = matchScore;
     }
 
-    @Column(name = "enter_by_winner")
-    public boolean getEnterByWinner()
+    @Column(name = "loser_default")
+    public boolean getLoserDefault()
     {
-        return enterByWinner;
+        return loserDefault;
     }
 
-    public void setEnterByWinner(boolean enterByWinner)
+    public void setLoserDefault(boolean loserDefault)
     {
-        this.enterByWinner = enterByWinner;
+        this.loserDefault = loserDefault;
     }
 
     @Column(name = "match_date")

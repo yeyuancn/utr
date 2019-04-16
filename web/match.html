@@ -4,6 +4,9 @@
 
     <title>Welcome to UTR League - Match information</title>
     <meta name="description" content="UTR League match information">
+    <meta property="og:image" content="images/icon.jpg">
+    <link rel="image_src" href="images/icon.jpg">
+    <link rel="icon" href="images/icon.jpg" />
 
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
@@ -67,6 +70,7 @@
                                         <tr>
                                             <th></th>
                                             <th></th>
+                                            <th></th>
                                             <th style="min-width: 60px">Set 1</th>
                                             <th style="min-width: 60px">Set 2</th>
                                             <th style="min-width: 60px">Set 3</th>
@@ -76,7 +80,7 @@
                                         <tr>
                                             <td><p class="black">You:</p></td>
                                             <td><p class="blue">{{fName}} {{lName}}</p></td>
-
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                             <td>
                                                 <p class="blue">
                                                     <select ng-options="o as o for o in scoreRange" ng-model="score_you1"/>
@@ -101,6 +105,7 @@
                                                             ng-model="opponent" required="true" style ="max-width: 160px"/>
                                                 </p>
                                             </td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                             <td>
                                                 <p class="blue">
                                                     <select ng-options="o as o for o in scoreRange" ng-model="score_opp1"/>
@@ -119,28 +124,30 @@
                                         </tr>
                                         <tr>
                                             <td><p class="black">Match Note:</p></td>
-                                            <td colspan="4">
+                                            <td colspan="5">
                                                 <input size="50" type="text"  ng-model="matchMemo" placeholder="Optional notes about the match" />
                                                 </input>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td><p class="black">Match Date:</p></td>
-                                            <td>
-                                                <input size="10" type="text"  ng-model="matchDate" placeholder="mm/dd/yyyy" required />
-                                                <div>
-                                                    <span class="redsmall" ng-show="dateRequired">Date field is required</span>
-                                                    <span class="redsmall" ng-show="dateInvalid">Not a valid date! (mm/dd/yyyy)</span>
-                                                </div>
-                                                </input>
-                                            </td>
-                                            <td colspan=3 >
-                                                <button class="btn btn-success" ng-disabled="dateRequired || dateInvalid || oppRequired" ng-click="submit()">
-                                                    <span class="glyphicon glyphicon-save"></span> Submit Score
-                                                </button>
-                                                <div class="redsmall" ng-show="sendError">{{ errorMessage }}</div>
-                                                <div class="bluesmall" ng-show="sendSuccess">Score has been submitted</div>
-                                            </td>
+                                                        <td><p class="black">Match Date:</p></td>
+                                                        <td>
+                                                            <input size="10" type="text"  ng-model="matchDate" placeholder="mm/dd/yyyy" required />
+                                                            <div>
+                                                                <span class="redsmall" ng-show="dateRequired">Date field is required</span>
+                                                                <span class="redsmall" ng-show="dateInvalid">Not a valid date! (mm/dd/yyyy)</span>
+                                                            </div>
+                                                            </input>
+                                                        </td>
+                                                        <td colspan="4">
+                                                            <input type="checkbox" ng-model="loserDefault">&nbsp;Opponent Default&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                                            <button class="btn btn-success" ng-disabled="dateRequired || dateInvalid || oppRequired" ng-click="submit()">
+                                                                <span class="glyphicon glyphicon-save"></span> Submit Score
+                                                            </button>
+                                                            <div class="redsmall" ng-show="sendError">{{ errorMessage }}</div>
+                                                            <div class="bluesmall" ng-show="sendSuccess">Score has been submitted</div>
+                                                        </td>
                                         </tr>
                                         </tbody>
                                     </table>

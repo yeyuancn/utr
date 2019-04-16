@@ -74,7 +74,7 @@ public class MatchResultService {
     public void addMatchResult(MatchResult result) throws AppValidationException {
         logger.info(result.getWinnerId() + " " + result.getLoserId() + " "
                 + result.getSet1Score() + " " + result.getSet2Score() + " " + result.getSet3Score()
-                + result.getMatchDate());
+                + result.getMatchDate() + " " + result.getLoserDefault());
 
         result = MatchResultHelper.decorateMatchResult(result);
         logger.info("updating match result table");
