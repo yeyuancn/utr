@@ -31,12 +31,14 @@ public class Startup implements ServletContextListener {
 		}
     	factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 
-
+/*
 		TimerTask timerTask = new LeagueTimerTask();
 		Timer timer = new Timer(true);
 		long interval = 3600l * 1000 * 2;
 		timer.scheduleAtFixedRate(timerTask, 3000, interval);
 		logger.info("Scheduled monitor service for every four hour");
+
+ */
 	}
     
 	@Override
