@@ -16,8 +16,8 @@ echo Deploy the WAR files
 echo --------------------------
 
 
-rm -fr /Users/yye/apache-tomcat-9.0.12/webapps/*
-cp target/*.war /Users/yye/apache-tomcat-9.0.12/webapps/
+rm -fr /Users/yuan.ye/apache-tomcat-8.5.78/webapps/utr*
+cp target/utr.war /Users/yuan.ye/apache-tomcat-8.5.78/webapps/
 
 echo --------------------------
 echo Moved WAR FILE for UTR

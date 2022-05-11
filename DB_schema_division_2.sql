@@ -59,8 +59,8 @@ update player set division_id = (select id from division where season_id = 1 and
 
 -- Views
 
-drop view match_result_view;
-drop view player_result_view;
+drop view if exists match_result_view;
+drop view if exists player_result_view;
 
 drop table if exists match_result;
 create table match_result
